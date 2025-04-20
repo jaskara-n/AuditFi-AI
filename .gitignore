@@ -1,11 +1,11 @@
-*.ts
-dist
-!index.ts
-!character.ts
+# *.ts
+# dist
+# !index.ts
+# !character.ts
 .env
 node_modules
 dist/
 
-db.sqlite
+# db.sqlite
 .idea
 .tee-cloud

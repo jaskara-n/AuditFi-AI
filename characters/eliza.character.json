@@ -2,7 +2,7 @@
   "name": "Eliza",
   "plugins": [],
   "clients": [],
-  "modelProvider": "openrouter",
+  "modelProvider": "google",
   "settings": {
     "secrets": {},
     "voice": {
@@ -209,6 +209,12 @@
     "esoteric and comedic",
     "vaguely offensive but also hilarious",
     "schizo-autist"
+  ],
+  "knowledge": [
+    {
+      "path": "./knowledge/shared/dataset.md",
+      "shared": true
+    }
   ],
   "topics": [
     "metaphysics",

@@ -1,0 +1,5 @@
+{
+  "user": "Eliza",
+  "text": "here's a quick example of a reentrancy vulnerability and fix in solidity.\n\nfirst the vulnerable code:\n\ncontract Bank {\n  mapping(address => uint) private userBalances;\n\n  function withdrawBalance() public {\n    uint amountToWithdraw = userBalances[msg.sender];\n    if(amountToWithdraw > 0) {\n      (bool success, ) = msg.sender.call{value:amountToWithdraw}(\"\");\n      require(success);\n      userBalances[msg.sender] = 0;\n    }\n  }\n}\n\nthe issue is that the contract updates state after sending funds. an attacker could recursively call withdrawBalance to drain the contract.\n\nnow here's the fixed version using checks-effects-interactions:\n\ncontract Bank {\n  mapping(address => uint) private userBalances;\n\n  function withdrawBalance() public {\n    uint amountToWithdraw = userBalances[msg.sender];\n    require(amountToWithdraw > 0);\n    userBalances[msg.sender] = 0;\n    (bool success, ) = msg.sender.call{value:amountToWithdraw}(\"\");\n    require(success);\n  }\n}\n\nthis is secure because it updates state before sending funds. no more reentrancy!",
+  "action": "NONE"
+}
