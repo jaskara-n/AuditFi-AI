@@ -1,5 +1,9 @@
+// @ts-ignore
 import { SolidityMetricsContainer } from "solidity-code-metrics";
-export async function generateMetrics(contractsPath: string) {
+import fs from 'fs';
+import path from 'path';
+
+export default async function generateMetrics(contractsPath: string) {
   let options = {
     basePath: "",
     inputFileGlobExclusions: undefined,
@@ -15,13 +19,26 @@ export async function generateMetrics(contractsPath: string) {
 
   let metrics = new SolidityMetricsContainer("metricsContainerName", options);
 
-  // analyze files
-  metrics.analyze(contractsPath);
-  // ...
-  metrics.analyze(contractsPath);
+  // Check if contractsPath is a directory
+  const stats = fs.statSync(contractsPath);
+  if (stats.isDirectory()) {
+    // Get all .sol files in the directory
+    const files = fs.readdirSync(contractsPath)
+      .filter(file => file.endsWith('.sol'))
+      .map(file => path.join(contractsPath, file));
 
-  // output
+    // Analyze each Solidity file
+    for (const file of files) {
+      metrics.analyze(file);
+    }
+  } else {
+    // Single file analysis
+    metrics.analyze(contractsPath);
+  }
+
+  // Generate report
   console.log(metrics.totals());
   let text = await metrics.generateReportMarkdown();
   console.log(text);
+  return text;
 }

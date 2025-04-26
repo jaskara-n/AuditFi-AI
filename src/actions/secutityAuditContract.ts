@@ -20,11 +20,10 @@ export const securityAuditContractAction: Action = {
   ],
   validate: async (_runtime: IAgentRuntime, message: Memory) => {
     const messageStr = JSON.stringify(message).toLowerCase();
-    return (
-      messageStr.includes("audit") ||
-      messageStr.includes("check") ||
-      messageStr.includes("review")
-    );
+    return messageStr.includes("contract") && 
+           messageStr.includes("audit") && 
+           messageStr.includes("```") &&
+           messageStr.includes("solidity");
   },
   handler: async (
     runtime: IAgentRuntime,

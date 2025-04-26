@@ -23,10 +23,11 @@ import {
   parseArguments,
 } from "./config/index.ts";
 import { initializeDatabase } from "./database/index.ts";
-import { securityAuditContractAction } from "./actions/secutityAuditContract.ts";
-
+// import { securityAuditContractAction } from "./actions/secutityAuditContract.ts";
+import { secretCodeAction } from "./actions/secretCode.ts";
+import { dirname } from "path";
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 export const wait = (minTime: number = 1000, maxTime: number = 3000) => {
   const waitTime =
@@ -62,7 +63,7 @@ export function createAgent(
       character.settings?.secrets?.WALLET_PUBLIC_KEY ? solanaPlugin : null,
     ].filter(Boolean),
     providers: [],
-    actions: [securityAuditContractAction],
+    actions: [secretCodeAction],
     services: [],
     managers: [],
     cacheManager: cache,
